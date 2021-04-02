@@ -41,6 +41,22 @@ client.connect(err => {
     })
   })
 
+  // update product
+  app.patch('/update/:id', (req,res) => {
+    productsCollection.updateOne({_id: objectId(req.params.id)},
+    {
+      $set: {
+        name: req.body.name,
+        price: req.body.price,
+        image: req.body.image
+      }
+    })
+    .then(result => {
+      res.send(result.modifiedCount > 0)
+    })
+})
+
+
   app.post('/addEvent', (req, res)=> {
     const eventDetails = req.body;
     itemCollection.insertOne(eventDetails)
@@ -49,6 +65,7 @@ client.connect(err => {
       console.log('inserted :' , result.insertedCount);
     })
   })
+ 
 
   // create new user
   app.post('/signup', (req, res)=> {
